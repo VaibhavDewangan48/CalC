@@ -46,23 +46,17 @@ pipeline {
             }
         }
         
-        stage('Check Docker') {
-   		steps {
-        		script {
-            			sh 'docker --version'
-           		 	sh 'docker ps'
-        			}
-    			}	
-	}
+        
 
         
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    sh "docker build -t ${DOCKER_IMAGE} ."
-                }
-            }
+      stage('Build Docker Image') {
+    steps {
+        dir('SciCalculator') {
+            sh "docker build -t ${DOCKER_IMAGE} ."
         }
+    }
+}
+
 
         stage('Deploy') {
             steps {
