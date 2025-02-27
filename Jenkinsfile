@@ -27,7 +27,9 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'mvn test'  // Run JUnit tests
+                dir('SciCalculator') {  // 🔹 Run tests inside SciCalculator
+                    sh 'mvn test'
+                }
             }
             post {
                 always {
@@ -38,7 +40,9 @@ pipeline {
 
         stage('Package') {
             steps {
-                sh 'mvn package'  // Creates the final JAR
+                dir('SciCalculator') {  // 🔹 Run packaging inside SciCalculator
+                    sh 'mvn package'
+                }
             }
         }
 
