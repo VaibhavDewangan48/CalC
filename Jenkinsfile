@@ -56,14 +56,15 @@ pipeline {
         }
 
         stage('Push Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry('', 'docker-hub-credentials') { // Replace with Jenkins credentials ID
-                        sh "docker push calculator"
-                    }
-                }
+    steps {
+        script {
+            docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                sh "docker push calculator"
             }
         }
+    }
+}
+
 
         stage('Deploy') {
             steps {
