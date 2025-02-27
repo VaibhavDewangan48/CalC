@@ -19,17 +19,17 @@ pipeline {
 
         stage('Build') {
             steps {
-                 // Change directory before running Maven
+                dir('SciCalculator') {  // Change directory before running Maven
                     sh "${MVN_CMD}"
-                
+                }
             }
         }
 
         stage('Test') {
             steps {
-                 // 🔹 Run tests inside SciCalculator
+                dir('SciCalculator') {  // 🔹 Run tests inside SciCalculator
                     sh 'mvn test'
-                
+                }
             }
             post {
                 always {
@@ -40,19 +40,26 @@ pipeline {
 
         stage('Package') {
             steps {
-                 // 🔹 Run packaging inside SciCalculator
+                dir('SciCalculator') {  // 🔹 Run packaging inside SciCalculator
                     sh 'mvn package'
-                
+                }
             }
         }
         
-      
+        stage('Check Docker') {
+   		steps {
+        		script {
+            			sh 'docker --version'
+           		 	sh 'docker ps'
+        			}
+    			}	
+	}
 
         
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t $DOCKER_IMAGE ."
+                    sh "docker build -t ${DOCKER_IMAGE} ."
                 }
             }
         }
