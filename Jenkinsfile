@@ -8,6 +8,7 @@ pipeline {
 
     environment {
         MVN_CMD = 'mvn clean package' // Maven command to build the project
+        DOCKER_IMAGE = 'your-dockerhub-username/scicalculator:latest' // Define Docker image name
     }
 
     stages {
@@ -19,7 +20,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('SciCalculator') {  // Change directory before running Maven
+                dir('SciCalculator') {  
                     sh "${MVN_CMD}"
                 }
             }
@@ -27,41 +28,47 @@ pipeline {
 
         stage('Test') {
             steps {
-                dir('SciCalculator') {  // 🔹 Run tests inside SciCalculator
+                dir('SciCalculator') {  
                     sh 'mvn test'
                 }
             }
             post {
                 always {
-                    junit '**/target/surefire-reports/*.xml' // Publish test results
+                    junit 'SciCalculator/target/surefire-reports/*.xml' // Corrected path for test reports
                 }
             }
         }
 
         stage('Package') {
             steps {
-                dir('SciCalculator') {  // 🔹 Run packaging inside SciCalculator
+                dir('SciCalculator') {  
                     sh 'mvn package'
                 }
             }
         }
         
-        
-
-        
-      stage('Build Docker Image') {
-    steps {
-        dir('SciCalculator') {
-            sh "docker build -t ${DOCKER_IMAGE} ."
+        stage('Build Docker Image') {
+            steps {
+                dir('SciCalculator') {
+                    sh "docker build -t $DOCKER_IMAGE ."
+                }
+            }
         }
-    }
-}
 
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('', 'docker-hub-credentials') { // Replace with Jenkins credentials ID
+                        sh "docker push ${DOCKER_IMAGE}"
+                    }
+                }
+            }
+        }
 
         stage('Deploy') {
             steps {
                 echo 'Deploying application...'
-                // Add deployment steps if needed (e.g., Docker, Kubernetes)
+                // Add deployment steps (e.g., Docker container run, Kubernetes deployment)
             }
         }
     }
@@ -75,3 +82,4 @@ pipeline {
         }
     }
 }
+
