@@ -50,7 +50,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 dir('SciCalculator') {
-                    sh "docker build -t calculator ."
+                    sh "sudo docker build -t calculator ."
                 }
             }
         }
