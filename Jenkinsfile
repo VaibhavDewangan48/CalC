@@ -59,7 +59,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', 'docker-hub-credentials') { // Replace with Jenkins credentials ID
-                        sh "docker push ${DOCKER_IMAGE}"
+                        sh "docker push calculator"
                     }
                 }
             }
