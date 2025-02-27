@@ -57,17 +57,20 @@ pipeline {
 
   	
   	
-  	stage('Push Docker Image') {
+stage('Push Docker Image') {
     steps {
         script {
-            docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                sh "docker tag calculator vaibhav48/calculator"
-                sh "docker push vaibhav48/calculator"
+            withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                sh '''
+                echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+                docker tag calculator "$DOCKER_USERNAME"/calculator
+                docker push "$DOCKER_USERNAME"/calculator
+                docker logout
+                '''
             }
         }
     }
 }
-
 
   	
 
