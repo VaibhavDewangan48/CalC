@@ -19,7 +19,9 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh "${MVN_CMD}"
+                dir('SciCalculator') {  // Change directory before running Maven
+                    sh "${MVN_CMD}"
+                }
             }
         }
 
