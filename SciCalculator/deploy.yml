@@ -1,30 +1,20 @@
 ---
 - name: Deploy SciCalculator Docker Container
   hosts: localhost
+  become: true  # Run as sudo (required for Docker)
   vars:
     ansible_python_interpreter: /usr/bin/python3
 
   tasks:
-    - name: Log in to Docker Hub
-      docker_login:
-        username: "{{ docker_hub_username }}"
-        password: "{{ docker_hub_password }}"
+    - name: Log in to Docker Hub (Workaround)
+      command: docker login -u {{ docker_hub_username }} -p {{ docker_hub_password }}
 
-    - name: Pull the latest SciCalculator image
-      docker_image:
-        name: vaibhav48/calculator:latest  # Update with your actual image
-        source: pull
-        state: present
+    - name: Pull the latest SciCalculator image (Workaround)
+      command: docker pull vaibhav48/calculator:latest
 
-    - name: Remove existing container (if running)
-      docker_container:
-        name: scicalculator
-        state: absent
+    - name: Stop and remove existing container (if running)
+      command: docker rm -f scicalculator
+      ignore_errors: yes  # Ignore errors if the container is not running
 
-    - name: Run the SciCalculator container
-      docker_container:
-        name: scicalculator
-        image: vaibhav48/calculator:latest  # Update if necessary
-        state: started
-        restart_policy: always
-        detach: true  # Keep it running in the background
+    - name: Run the SciCalculator container (Workaround)
+      command: docker run --name scicalculator -d --restart always vaibhav48/calculator:latest

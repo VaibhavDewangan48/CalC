@@ -80,10 +80,10 @@ stage('Push Docker Image') {
     steps {
         script {
             withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                sh '''
-                sudo ansible-playbook /home/vaibhav/Desktop/CalC/SciCalculator/deploy.yml \
-                -e "docker_hub_username=${DOCKER_USERNAME} docker_hub_password=${DOCKER_PASSWORD}"
-                '''
+               sh '''
+		ansible-playbook /home/vaibhav/Desktop/CalC/SciCalculator/deploy.yml \
+		-e '{"docker_hub_username": "'${DOCKER_USERNAME}'", "docker_hub_password": "'${DOCKER_PASSWORD}'"}'
+		'''
             }
         }
     }
