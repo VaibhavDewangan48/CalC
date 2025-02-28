@@ -1,13 +1,53 @@
+#---
+#- name: Deploy SciCalculator Docker Container
+#  hosts: localhost
+#  become: true  # Run as sudo (required for Docker)
+#
+#  tasks:
+#    - name: Log in to Docker Hub
+#      community.docker.docker_login:
+#        username: "{{ docker_hub_username }}"
+#        password: "{{ docker_hub_password }}"
+#
+#    - name: Pull the latest SciCalculator image
+#      community.docker.docker_image:
+#        name: vaibhav48/calculatortest
+#        source: pull
+#        force_source: true
+#
+#    - name: Remove existing container (if running)
+#      community.docker.docker_container:
+#        name: scicalculator
+#        state: absent  # Stops and removes the container if it exists
+#
+#    - name: Run the SciCalculator container
+#      community.docker.docker_container:
+#        name: scicalculatortest
+#        image: vaibhav48/calculatortest # Change if needed
+#        state: started
+#        restart_policy: always
+#        detach: false  # Keeps the container running in foreground
+
 ---
 - name: Deploy SciCalculator Docker Container
   hosts: localhost
-  become: true  # Run as sudo (required for Docker)
+  become: true  # Run as sudo (needed for Docker)
+
+  vars:
+    docker_hub_username: "vaibhav48"
+    docker_hub_password: "yourpassword"  # Store securely with ansible-vault
 
   tasks:
-    - name: Log in to Docker Hub
+    - name: Ensure Docker SDK for Python is installed
+      pip:
+        name: docker
+        state: present
+
+    - name: Log in to Docker Hub (if required)
       community.docker.docker_login:
         username: "{{ docker_hub_username }}"
         password: "{{ docker_hub_password }}"
+      when: docker_hub_username != ""
 
     - name: Pull the latest SciCalculator image
       community.docker.docker_image:
@@ -17,13 +57,15 @@
 
     - name: Remove existing container (if running)
       community.docker.docker_container:
-        name: scicalculator
-        state: absent  # Stops and removes the container if it exists
+        name: scicalculatortest  # Fixed naming
+        state: absent  # Ensures no conflicts
 
     - name: Run the SciCalculator container
       community.docker.docker_container:
         name: scicalculatortest
-        image: vaibhav48/calculatortest # Change if needed
+        image: vaibhav48/calculatortest
         state: started
         restart_policy: always
-        detach: false  # Keeps the container running in foreground
+        detach: false  # Change to true for background mode
+        interactive: true
+        tty: true  # Ensures proper terminal interaction
