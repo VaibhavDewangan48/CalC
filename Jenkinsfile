@@ -78,7 +78,7 @@ stage('Push Docker Image') {
 
     stage('Deploy with Ansible') {
             steps {
-                sh 'ansible-playbook deploy.yml -e "docker_hub_username=$DOCKER_USER docker_hub_password=$DOCKER_PASS"'
+                sh 'ansible-playbook ~/Desktop/CalC/SciCalculator/deploy.yml -e docker_hub_username="your_username" docker_hub_password="your_password"'
             }
         }
     }
