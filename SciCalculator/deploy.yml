@@ -1,7 +1,7 @@
 ---
-- name: Deploy SciCalculator Docker Container
+- name: Pull SciCalculator Docker Image
   hosts: localhost
-  gather_facts: no  # 🔹 Disables fact gathering that requires sudo
+  gather_facts: no  # Disables unnecessary fact gathering
   vars:
     ansible_python_interpreter: /usr/bin/python3
 
@@ -11,10 +11,3 @@
 
     - name: Pull the latest SciCalculator image
       command: docker pull vaibhav48/calculator:latest
-
-    - name: Stop and remove existing container (if running)
-      command: docker rm -f scicalculator
-      ignore_errors: yes
-
-    - name: Run the SciCalculator container in background
-      command: docker run --name scicalculator -d vaibhav48/calculator:latest tail -f /dev/null
