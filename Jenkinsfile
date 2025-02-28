@@ -64,8 +64,8 @@ stage('Push Docker Image') {
             withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                 sh '''
                 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-                docker tag calculator "$DOCKER_USERNAME"/calculatortest
-                docker push "$DOCKER_USERNAME"/calculatortest
+                docker tag calculator "$DOCKER_USERNAME"/calculatorfinaltest
+                docker push "$DOCKER_USERNAME"/calculatorfinaltest
                 docker logout
                 '''
             }

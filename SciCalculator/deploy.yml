@@ -10,4 +10,4 @@
       command: docker login -u {{ docker_hub_username }} -p {{ docker_hub_password }}
 
     - name: Pull the latest SciCalculator image
-      command: docker pull vaibhav48/calculator:latest
+      command: docker pull vaibhav48/calculatorfinaltest
