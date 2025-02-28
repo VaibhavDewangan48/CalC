@@ -11,7 +11,7 @@
 
     - name: Pull the latest SciCalculator image
       community.docker.docker_image:
-        name: vaibhav48/calculator:latest  # Change if your image name differs
+        name: vaibhav48/calculatortest
         source: pull
         force_source: true
 
@@ -20,10 +20,10 @@
         name: scicalculator
         state: absent  # Stops and removes the container if it exists
 
-    - name: Run the SciCalculator container (without ports)
+    - name: Run the SciCalculator container
       community.docker.docker_container:
-        name: scicalculator
-        image: vaibhav48/calculator:latest  # Change if needed
+        name: scicalculatortest
+        image: vaibhav48/calculatortest # Change if needed
         state: started
         restart_policy: always
         detach: false  # Keeps the container running in foreground

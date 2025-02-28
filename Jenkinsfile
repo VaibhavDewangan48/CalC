@@ -9,6 +9,7 @@ pipeline {
     environment {
         MVN_CMD = 'mvn clean package' // Maven command to build the project
         DOCKER_IMAGE = 'your-dockerhub-username/scicalculator:latest' // Define Docker image name
+        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
     }
 
     stages {
@@ -63,8 +64,8 @@ stage('Push Docker Image') {
             withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                 sh '''
                 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-                docker tag calculator "$DOCKER_USERNAME"/calculator
-                docker push "$DOCKER_USERNAME"/calculator
+                docker tag calculator "$DOCKER_USERNAME"/calculatortest
+                docker push "$DOCKER_USERNAME"/calculatortest
                 docker logout
                 '''
             }
@@ -75,14 +76,12 @@ stage('Push Docker Image') {
   	
 
 
-        stage('Deploy') {
+    stage('Deploy with Ansible') {
             steps {
-                echo 'Deploying application...'
-                // Add deployment steps (e.g., Docker container run, Kubernetes deployment)
+                sh 'ansible-playbook deploy.yml -e "docker_hub_username=$DOCKER_USER docker_hub_password=$DOCKER_PASS"'
             }
         }
     }
-
     post {
         success {
             echo 'Build and tests passed! ✅'
