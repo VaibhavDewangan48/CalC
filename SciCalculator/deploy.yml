@@ -16,5 +16,6 @@
       command: docker rm -f scicalculator
       ignore_errors: yes
 
-    - name: Run the SciCalculator container in interactive mode
-      command: docker run --name scicalculator -i vaibhav48/calculator:latest
+    - name: Run the SciCalculator container in background
+      command: docker run --name scicalculator -d vaibhav48/calculator:latest tail -f /dev/null
+   
