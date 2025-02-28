@@ -7,7 +7,7 @@
 
   tasks:
     - name: Log in to Docker Hub
-      command: docker login -u {{ docker_hub_username }} -p {{ docker_hub_password }}
+      command: docker login -u vaibhav48 -p vaibhav123456789
 
     - name: Pull the latest SciCalculator image
       command: docker pull vaibhav48/calculatorfinaltest
@@ -17,4 +17,4 @@
       ignore_errors: yes  # Prevents failure if the container doesn't exist
 
     - name: Run the SciCalculator container in detached mode
-      command: docker run -d --name scicalculator vaibhav48/calculator:latest --auto-exit
+      command: docker run -it -d --name scicalculator vaibhav48/calculator:latest
