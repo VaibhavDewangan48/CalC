@@ -1,20 +1,20 @@
 ---
 - name: Deploy SciCalculator Docker Container
   hosts: localhost
-  become: true  # Run as sudo (required for Docker)
+  gather_facts: no  # 🔹 Disables fact gathering that requires sudo
   vars:
     ansible_python_interpreter: /usr/bin/python3
 
   tasks:
-    - name: Log in to Docker Hub (Workaround)
+    - name: Log in to Docker Hub
       command: docker login -u {{ docker_hub_username }} -p {{ docker_hub_password }}
 
-    - name: Pull the latest SciCalculator image (Workaround)
+    - name: Pull the latest SciCalculator image
       command: docker pull vaibhav48/calculator:latest
 
     - name: Stop and remove existing container (if running)
       command: docker rm -f scicalculator
-      ignore_errors: yes  # Ignore errors if the container is not running
+      ignore_errors: yes
 
-    - name: Run the SciCalculator container (Workaround)
+    - name: Run the SciCalculator container
       command: docker run --name scicalculator -d --restart always vaibhav48/calculator:latest
