@@ -17,46 +17,58 @@ public class Main {
             System.out.println("5. Exit");
             System.out.print("Enter your choice: ");
 
-            if (!scanner.hasNextInt()) {
-                System.out.println("Invalid input! Please enter a number between 1-5.");
-                scanner.next(); // Clear invalid input
-                continue;
-            }
-            int choice = scanner.nextInt();
+            int choice = getValidIntInput(scanner);
 
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter number: ");
+                    double num1 = getValidDoubleInput(scanner);
+                    System.out.println("Result: " + squareRoot(num1));
+                    break;
+                case 2:
+                    System.out.print("Enter an integer: ");
+                    int num2 = getValidIntInput(scanner);
+                    System.out.println("Result: " + factorial(num2));
+                    break;
+                case 3:
+                    System.out.print("Enter number: ");
+                    double num3 = getValidDoubleInput(scanner);
+                    System.out.println("Result: " + naturalLog(num3));
+                    break;
+                case 4:
+                    System.out.print("Enter base: ");
+                    double base = getValidDoubleInput(scanner);
+                    System.out.print("Enter exponent: ");
+                    double exponent = getValidDoubleInput(scanner);
+                    System.out.println("Result: " + power(base, exponent));
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice, try again.");
+            }
+        }
+    }
+
+    private static int getValidIntInput(Scanner scanner) {
+        while (true) {
             try {
-                switch (choice) {
-                    case 1:
-                        System.out.print("Enter number: ");
-                        double num1 = scanner.nextDouble();
-                        System.out.println("Result: " + squareRoot(num1));
-                        break;
-                    case 2:
-                        System.out.print("Enter an integer: ");
-                        int num2 = scanner.nextInt();
-                        System.out.println("Result: " + factorial(num2));
-                        break;
-                    case 3:
-                        System.out.print("Enter number: ");
-                        double num3 = scanner.nextDouble();
-                        System.out.println("Result: " + naturalLog(num3));
-                        break;
-                    case 4:
-                        System.out.print("Enter base: ");
-                        double base = scanner.nextDouble();
-                        System.out.print("Enter exponent: ");
-                        double exponent = scanner.nextDouble();
-                        System.out.println("Result: " + power(base, exponent));
-                        break;
-                    case 5:
-                        System.out.println("Exiting...");
-                        scanner.close();
-                        System.exit(0);
-                    default:
-                        System.out.println("Invalid choice, try again.");
-                }
+                return scanner.nextInt();
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input! Please enter a valid number.");
+                System.out.print("Invalid input. Please enter an integer: ");
+                scanner.next(); // Clear invalid input
+            }
+        }
+    }
+
+    private static double getValidDoubleInput(Scanner scanner) {
+        while (true) {
+            try {
+                return scanner.nextDouble();
+            } catch (InputMismatchException e) {
+                System.out.print("Invalid input. Please enter a number: ");
                 scanner.next(); // Clear invalid input
             }
         }
