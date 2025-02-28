@@ -1,11 +1,17 @@
 package com.vaibhav;
-import java.util.Scanner;
 
+import java.util.Scanner;
 import static com.vaibhav.SciCalculator.*;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+
+        // Shutdown Hook to handle Ctrl+C
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("\nReceived termination signal. Exiting gracefully...");
+            scanner.close();
+        }));
 
         while (true) {
             System.out.println("\nScientific Calculator - Choose an operation:");
@@ -16,21 +22,20 @@ public class Main {
             System.out.println("5. Exit");
             System.out.print("Enter your choice: ");
 
-            // **Prevent crash by checking input validity**
+            // ✅ Check if input exists before reading
             if (!scanner.hasNextInt()) {
-                System.out.println("Invalid input. Please enter a valid number.");
-                scanner.nextLine(); // Clear the invalid input
+                System.out.println("No valid input detected. Please enter a number.");
+                scanner.next();  // Consume invalid input
                 continue;
             }
 
             int choice = scanner.nextInt();
-
             switch (choice) {
                 case 1:
                     System.out.print("Enter number: ");
                     if (!scanner.hasNextDouble()) {
-                        System.out.println("Invalid input.");
-                        scanner.nextLine();
+                        System.out.println("Invalid input. Please enter a valid number.");
+                        scanner.next();
                         continue;
                     }
                     double num1 = scanner.nextDouble();
@@ -39,8 +44,8 @@ public class Main {
                 case 2:
                     System.out.print("Enter an integer: ");
                     if (!scanner.hasNextInt()) {
-                        System.out.println("Invalid input.");
-                        scanner.nextLine();
+                        System.out.println("Invalid input. Please enter a valid integer.");
+                        scanner.next();
                         continue;
                     }
                     int num2 = scanner.nextInt();
@@ -49,8 +54,8 @@ public class Main {
                 case 3:
                     System.out.print("Enter number: ");
                     if (!scanner.hasNextDouble()) {
-                        System.out.println("Invalid input.");
-                        scanner.nextLine();
+                        System.out.println("Invalid input. Please enter a valid number.");
+                        scanner.next();
                         continue;
                     }
                     double num3 = scanner.nextDouble();
@@ -59,15 +64,16 @@ public class Main {
                 case 4:
                     System.out.print("Enter base: ");
                     if (!scanner.hasNextDouble()) {
-                        System.out.println("Invalid input.");
-                        scanner.nextLine();
+                        System.out.println("Invalid input. Please enter a valid number.");
+                        scanner.next();
                         continue;
                     }
                     double base = scanner.nextDouble();
+
                     System.out.print("Enter exponent: ");
                     if (!scanner.hasNextDouble()) {
-                        System.out.println("Invalid input.");
-                        scanner.nextLine();
+                        System.out.println("Invalid input. Please enter a valid number.");
+                        scanner.next();
                         continue;
                     }
                     double exponent = scanner.nextDouble();

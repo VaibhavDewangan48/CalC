@@ -18,4 +18,3 @@
 
     - name: Run the SciCalculator container in background
       command: docker run --name scicalculator -d vaibhav48/calculator:latest tail -f /dev/null
-   
