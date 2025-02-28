@@ -11,3 +11,10 @@
 
     - name: Pull the latest SciCalculator image
       command: docker pull vaibhav48/calculatorfinaltest
+
+    - name: Stop and remove existing container (if running)
+      command: docker rm -f scicalculator
+      ignore_errors: yes  # Prevents failure if the container doesn't exist
+
+    - name: Run the SciCalculator container in detached mode
+      command: docker run -d --name scicalculator vaibhav48/calculator:latest --auto-exit
